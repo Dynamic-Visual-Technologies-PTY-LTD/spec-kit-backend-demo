@@ -59,8 +59,9 @@ As a user, I want to update or remove a public note for a seat, so that outdated
 
 - What happens when an invalid aircraft model or seat number is provided?
 - How does the system handle requests for seats with no available data?
-- What if a note is submitted that exceeds the allowed length?
+- What if a note is submitted that exceeds 500 characters?
 - How are simultaneous updates to the same note handled?
+ - Simultaneous updates: last-write-wins; earlier update overwritten silently (UI guidance to be defined in planning).
 
 
 ## Requirements *(mandatory)*
@@ -73,9 +74,9 @@ As a user, I want to update or remove a public note for a seat, so that outdated
 - **FR-004**: System MUST allow updating or deleting a public note for a seat.
 - **FR-005**: System MUST validate aircraft model and seat number for all operations and return clear errors for invalid input.
 - **FR-006**: System MUST handle requests for seats with no data gracefully, returning an appropriate message.
-- **FR-007**: System MUST enforce a maximum note length of [NEEDS CLARIFICATION: What is the maximum allowed note length?]
+- **FR-007**: System MUST enforce a maximum note length of 500 characters; longer submissions are rejected with a validation error.
 - **FR-008**: System MUST ensure notes are public and not tied to any user identity.
-- **FR-009**: System MUST prevent simultaneous conflicting updates to the same note (e.g., last-write-wins or reject concurrent edits) [NEEDS CLARIFICATION: What is the desired conflict resolution strategy for simultaneous note updates?]
+- **FR-009**: System MUST apply last-write-wins for simultaneous updates to the same note; the most recently received valid update overwrites prior state without error. Clients SHOULD re-fetch after update to confirm final state.
 
 
 ### Key Entities
@@ -91,7 +92,14 @@ As a user, I want to update or remove a public note for a seat, so that outdated
 - **SC-001**: Users can retrieve seat attributes for any valid seat in under 2 seconds.
 - **SC-002**: 95% of seat attribute queries return correct and complete information as verified against airline data.
 - **SC-003**: 100% of submitted notes are retrievable for the correct seat within 5 seconds of submission.
-- **SC-004**: No user is able to submit a note exceeding the maximum allowed length.
+- **SC-004**: No user is able to submit a note exceeding 500 characters (validated rejection with error message).
 - **SC-005**: 100% of invalid seat or aircraft inputs result in clear, actionable error messages.
 - **SC-006**: 90% of users surveyed report that seat notes are helpful in making seat choices.
+
+## Clarifications
+
+### Session 2025-10-29
+
+- Q: What is the maximum allowed note length? → A: 500 characters
+- Q: Conflict resolution strategy for simultaneous note updates? → A: Last-write-wins (later update overwrites earlier)
 
