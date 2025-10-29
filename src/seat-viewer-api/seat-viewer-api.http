@@ -1,0 +1,6 @@
+@seat_viewer_api_HostAddress = http://localhost:5071
+
+GET {{seat_viewer_api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
